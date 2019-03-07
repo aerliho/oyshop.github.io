@@ -7,10 +7,17 @@
 
 <script>
 import footerNav from './components/footerNav/footerNav'
+import {mapActions} from 'vuex'
 export default {
   name: 'App',
   components: {
     footerNav
+  },
+  created () {
+    this.getCityPosition()
+  },
+  methods: {
+    ...mapActions(['getCityPosition'])
   }
 }
 </script>

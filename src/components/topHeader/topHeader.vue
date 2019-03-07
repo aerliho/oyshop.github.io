@@ -30,4 +30,9 @@ export default {
       padding 0.2rem 0
       font-size 0.3rem
       width 50%
+      .ellipsis
+        display block
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <topHeader title="绵阳市">
+    <topHeader :title="cityDetailedInfo.address">
       <span class="header_iconsousuo" slot="left" @click="goTo('/search')">
         <i class="iconfont iconsousuo"></i>
       </span>
@@ -19,6 +19,7 @@
 import topHeader from '../../components/topHeader/topHeader'
 import shopList from '../../components/shopList/shopList'
 import foodTypes from '../../components/foodTypes/foodTypes'
+import {mapActions, mapState} from 'vuex'
 export default {
   name: 'home',
   components: {
@@ -26,10 +27,17 @@ export default {
     shopList,
     foodTypes
   },
+  computed: {
+    ...mapState(['cityDetailedInfo'])
+  },
+  mounted () {
+    setTimeout(() => { this.getCityDetailedInfo() }, 500)
+  },
   methods: {
     goTo (path) {
       this.$router.replace(path)
-    }
+    },
+    ...mapActions(['getCityDetailedInfo'])
   }
 }
 </script>

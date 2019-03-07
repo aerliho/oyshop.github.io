@@ -5,7 +5,7 @@
 import ajax from './ajax'
 const BASE_URL = '/api'
 // 获取城市定位
-export const reqCityPositioning = () => ajax(BASE_URL + '/v1/cities', {type: 'guess'})
+export const reqCityPosition = () => ajax(BASE_URL + '/v1/cities', {type: 'guess'})
 // 根据经纬度详细定位
 export const reqCityDetailedInfo = (geohash) => ajax(`${BASE_URL}/v2/pois/${geohash}`)
 // 食品分类列表
