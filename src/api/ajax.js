@@ -3,7 +3,7 @@
   使用promise对象异步返回response.data数据
  */
 import axios from 'axios'
-export default function ajax (url, data = {}, type = 'GET') {
+export default function ajax (url, data = {}, type = 'get') {
   return new Promise(function (resolve, reject) {
     // 执行异步ajax请求
     let promise
