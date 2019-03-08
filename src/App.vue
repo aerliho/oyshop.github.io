@@ -17,7 +17,17 @@ export default {
     this.getCityPosition()
   },
   methods: {
-    ...mapActions(['getCityPosition'])
+    ...mapActions(['getCityPosition']),
+    ...mapActions(['getCityDetailedInfo']),
+    ...mapActions(['getShopList'])
+  },
+  watch: {
+    cityPosition (value) {
+      this.$nextTick(() => {
+        this.getCityDetailedInfo()
+        this.getShopList()
+      })
+    }
   }
 }
 </script>

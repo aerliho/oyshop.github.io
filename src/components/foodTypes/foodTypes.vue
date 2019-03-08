@@ -2,104 +2,12 @@
   <nav class="msite_nav">
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <a href="javascript:" class="link_to_food">
+        <div class="swiper-slide" v-for="(foodtypes, index) in foodTypesArr" :key="index">
+          <a href="javascript:" class="link_to_food" v-for="(foodType, index) in foodtypes" :key="index">
             <div class="food_container">
-              <img src="./imgs/nav/1.jpg">
+              <img :src="'https://fuss10.elemecdn.com' + foodType.image_url">
             </div>
-            <span>甜品饮品</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/2.jpg">
-            </div>
-            <span>商超便利</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/3.jpg">
-            </div>
-            <span>美食</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/4.jpg">
-            </div>
-            <span>简餐</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/5.jpg">
-            </div>
-            <span>新店特惠</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/6.jpg">
-            </div>
-            <span>准时达</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/7.jpg">
-            </div>
-            <span>预订早餐</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/8.jpg">
-            </div>
-            <span>土豪推荐</span>
-          </a>
-        </div>
-        <div class="swiper-slide">
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/9.jpg">
-            </div>
-            <span>甜品饮品</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/10.jpg">
-            </div>
-            <span>商超便利</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/11.jpg">
-            </div>
-            <span>美食</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/12.jpg">
-            </div>
-            <span>简餐</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/13.jpg">
-            </div>
-            <span>新店特惠</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/14.jpg">
-            </div>
-            <span>准时达</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/1.jpg">
-            </div>
-            <span>预订早餐</span>
-          </a>
-          <a href="javascript:" class="link_to_food">
-            <div class="food_container">
-              <img src="./imgs/nav/2.jpg">
-            </div>
-            <span>土豪推荐</span>
+            <span>{{ foodType.title }}</span>
           </a>
         </div>
       </div>
@@ -112,16 +20,49 @@
 <script>
 import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.min.css'
+import {mapActions, mapState} from 'vuex'
 export default {
   name: 'foodTypes',
+  data () {
+    return {
+    }
+  },
   mounted () {
-    /* eslint-disable no-new */
-    new Swiper('.swiper-container', {
-      loop: true,
-      pagination: {
-        el: '.swiper-pagination'
-      }
-    })
+    this.getFoodTypes()
+  },
+  computed: {
+    ...mapState(['foodTypes']),
+    foodTypesArr () {
+      const {foodTypes} = this
+      const bigArr = []
+      let smallArr = []
+      foodTypes.forEach(element => {
+        if (smallArr.length < 8) {
+          smallArr.push(element)
+        }
+        if (smallArr.length === 8) {
+          bigArr.push(smallArr)
+          smallArr = []
+        }
+      })
+      return bigArr
+    }
+  },
+  methods: {
+    ...mapActions(['getFoodTypes'])
+  },
+  watch: {
+    foodTypes (value) {
+      this.$nextTick(() => {
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container', {
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        })
+      })
+    }
   }
 }
 </script>
