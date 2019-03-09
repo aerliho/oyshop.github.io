@@ -5,7 +5,7 @@
       <span class="shop_header_title">附近商家</span>
     </div>
     <div class="shop_container">
-      <ul class="shop_list">
+      <ul class="shop_list" v-if="shopList.length">
         <li class="shop_li border-1px" v-for="(shop, index) in shopList" :key="index">
           <a>
             <div class="shop_left">
@@ -15,20 +15,12 @@
               <section class="shop_detail_header">
                 <h4 class="shop_title ellipsis">{{ shop.name }}</h4>
                 <ul class="shop_detail_ul">
-                  <li class="supports">{{ shop.supports[0].icon_name }}</li>
-                  <li class="supports">{{ shop.supports[1].icon_name }}</li>
-                  <li class="supports">票</li>
+                  <li class="supports" v-for="(support, index) in shop.supports" :key="index">{{ support.icon_name }}</li>
                 </ul>
               </section>
               <section class="shop_rating_order">
                 <section class="shop_rating_order_left">
-                  <div class="star star-24">
-                    <span class="star-item on"></span>
-                    <span class="star-item on"></span>
-                    <span class="star-item on"></span>
-                    <span class="star-item half"></span>
-                    <span class="star-item off"></span>
-                  </div>
+                  <star :size="24" :score="shop.rating"></star>
                   <div class="rating_section">{{ shop.rating }}</div>
                   <div class="order_section">月售{{ shop.recent_order_num }}单</div>
                 </section>
@@ -38,7 +30,7 @@
               </section>
               <section class="shop_distance">
                 <p class="shop_delivery_msg">
-                  <span>¥20起送</span>
+                  <span>¥{{ shop.float_minimum_order_amount }}起送</span>
                   <span class="segmentation">/</span>
                   <span>{{ shop.piecewise_agent_fee.tips }}</span>
                 </p>
@@ -47,17 +39,24 @@
           </a>
         </li>
       </ul>
+      <ul v-else>
+        <li v-for="(item, index) in 6" :key="index"><img src="./imgs/shop_back.svg" alt="back"></li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+import star from '../stars/star'
 
 export default {
   name: 'shopList',
   computed: {
     ...mapState(['shopList'])
+  },
+  components: {
+    star
   }
 }
 </script>
@@ -140,54 +139,6 @@ export default {
                 .shop_rating_order_left
                   float left
                   color #ff9a0d
-                  .star //2x图 3x图
-                    float left
-                    font-size 0
-                    .star-item
-                      display inline-block
-                      background-repeat no-repeat
-                    &.star-48
-                      .star-item
-                        width 0.3rem
-                        height 0.3rem
-                        margin-right 0.3rem
-                        background-size 0.3rem 0.3rem
-                        &:last-child
-                          margin-right: 0
-                        &.on
-                          bg-image('./imgs/stars/star48_on')
-                        &.half
-                          bg-image('./imgs/stars/star48_half')
-                        &.off
-                          bg-image('./imgs/stars/star48_off')
-                    &.star-36
-                      .star-item
-                        width 0.3rem
-                        height 0.3rem
-                        margin-right 0.1rem
-                        background-size 0.3rem 0.3rem
-                        &:last-child
-                          margin-right 0
-                        &.on
-                          bg-image('./imgs/stars/star36_on')
-                        &.half
-                          bg-image('./imgs/stars/star36_half')
-                        &.off
-                          bg-image('./imgs/stars/star36_off')
-                    &.star-24
-                      .star-item
-                        width 0.2rem
-                        height 0.2rem
-                        margin-right 0.015rem
-                        background-size 0.2rem 0.2rem
-                        &:last-child
-                          margin-right 0
-                        &.on
-                          bg-image('./imgs/stars/star24_on')
-                        &.half
-                          bg-image('./imgs/stars/star24_half')
-                        &.off
-                          bg-image('./imgs/stars/star24_off')
                   .rating_section
                     float left
                     font-size 0.2rem

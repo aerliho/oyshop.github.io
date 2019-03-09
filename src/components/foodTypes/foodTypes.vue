@@ -1,6 +1,6 @@
 <template>
   <nav class="msite_nav">
-    <div class="swiper-container">
+    <div class="swiper-container" v-if="foodTypes.length">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(foodtypes, index) in foodTypesArr" :key="index">
           <a href="javascript:" class="link_to_food" v-for="(foodType, index) in foodtypes" :key="index">
@@ -14,6 +14,7 @@
       <!-- Add Pagination -->
       <div class="swiper-pagination"></div>
     </div>
+    <img v-else src="./imgs/msite_back.svg" alt="msite_back">
   </nav>
 </template>
 
