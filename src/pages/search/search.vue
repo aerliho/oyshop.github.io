@@ -3,7 +3,7 @@
     <topHeader title="搜索"></topHeader>
     <div class="searchContent">
       <div class="search_label">
-        <input type="text" placeholder="请输入商家或美食名称" name="searchRes" class="inputText"> <button class="searchBtn"><i class="iconfont iconsousuo"></i></button>
+        <input type="text" placeholder="请输入商家或美食名称" name="searchRes" class="inputText"> <button class="searchBtn"><i class="iconfont iconsousuo searchicon"></i></button>
       </div>
     </div>
   </div>
@@ -47,4 +47,6 @@ export default {
           border-radius 5px
           border none
           outline none
+          .searchicon
+            font-size 0.3rem
 </style>

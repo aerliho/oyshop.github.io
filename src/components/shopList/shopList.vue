@@ -6,17 +6,17 @@
     </div>
     <div class="shop_container">
       <ul class="shop_list">
-        <li class="shop_li border-1px">
+        <li class="shop_li border-1px" v-for="(shop, index) in shopList" :key="index">
           <a>
             <div class="shop_left">
-              <img class="shop_img" src="./imgs/shop/1.jpg">
+              <img class="shop_img" :src="'//elm.cangdu.org/img/' + shop.image_path">
             </div>
             <div class="shop_right">
               <section class="shop_detail_header">
-                <h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
+                <h4 class="shop_title ellipsis">{{ shop.name }}</h4>
                 <ul class="shop_detail_ul">
-                  <li class="supports">保</li>
-                  <li class="supports">准</li>
+                  <li class="supports">{{ shop.supports[0].icon_name }}</li>
+                  <li class="supports">{{ shop.supports[1].icon_name }}</li>
                   <li class="supports">票</li>
                 </ul>
               </section>
@@ -29,8 +29,8 @@
                     <span class="star-item half"></span>
                     <span class="star-item off"></span>
                   </div>
-                  <div class="rating_section">3.6</div>
-                  <div class="order_section">月售106单</div>
+                  <div class="rating_section">{{ shop.rating }}</div>
+                  <div class="order_section">月售{{ shop.recent_order_num }}单</div>
                 </section>
                 <section class="shop_rating_order_right">
                   <span class="delivery_style delivery_right">外卖专送</span>
@@ -40,7 +40,7 @@
                 <p class="shop_delivery_msg">
                   <span>¥20起送</span>
                   <span class="segmentation">/</span>
-                  <span>配送费约¥5</span>
+                  <span>{{ shop.piecewise_agent_fee.tips }}</span>
                 </p>
               </section>
             </div>
@@ -52,10 +52,12 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 
 export default {
   name: 'shopList',
   computed: {
+    ...mapState(['shopList'])
   }
 }
 </script>
@@ -133,8 +135,8 @@ export default {
               .shop_rating_order
                 clearFix()
                 width 100%
-                margin-top 0.25rem
-                margin-bottom 0.25rem
+                margin-top 0.2rem
+                margin-bottom 0.2rem
                 .shop_rating_order_left
                   float left
                   color #ff9a0d
