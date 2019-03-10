@@ -6,6 +6,10 @@ import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
 import store from './store'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+Vue.use(ElementUI)
 
 FastClick.attach(document.body)
 

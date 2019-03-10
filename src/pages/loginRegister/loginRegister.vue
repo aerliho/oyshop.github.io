@@ -5,7 +5,46 @@
       <span slot="right"></span>
     </topHeader>
     <div class="loginContent">
-      <h3>OY外卖</h3>
+      <h3 class="login_title">偶耶外卖</h3>
+      <div class="login_types">
+        <span class="login_msg" :class="{on:loginWay}" @click="loginWay=true">短信登录</span>
+        <span class="login_pwd" :class="{on:!loginWay}" @click="loginWay=false">密码登录</span>
+      </div>
+      <div class="login_content">
+        <form :class="{on_form:loginWay}">
+          <section class="phone_num">
+            <input type="tel" placeholder="手机号" class="num_input" maxlength="11" v-model="phone">
+            <button class="send_verification" :disabled="!rightPhone" :class="{right_phone:rightPhone,computed_time:computedFlag}" @click.prevent="getCode">
+              {{computeTime ? `已发送${computeTime}s`:'发送验证码'}}
+            </button>
+          </section>
+          <section class="verification_num">
+            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="6">
+            <div class="some_info">温馨提示：未注册过帐号的手机号，登录时将自动注册，且代表已同意<span>《用户服务协议》</span></div>
+          </section>
+          <section class="login_submit">
+            <button class="login_btn">登录</button>
+            <a href="javascript: void(0)" class="about_me">关于我们</a>
+          </section>
+        </form>
+        <form :class="{on_form:!loginWay}">
+          <section class="phone_num">
+            <input type="tel" placeholder="手机/邮箱/用户名" class="num_input" maxlength="11">
+          </section>
+          <section class="pwd_num">
+            <input type="password" placeholder="密码" class="receive_verification">
+          </section>
+          <section class="verification_num">
+            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="4">
+            <img src="./imgs/captcha.svg" class="verification_img">
+            <div class="some_info">温馨提示：未注册过帐号的手机号/邮箱/用户名，登录时将自动注册，且代表已同意<span>《用户服务协议》</span></div>
+          </section>
+          <section class="login_submit">
+            <button class="login_btn">登录</button>
+            <a href="javascript: void(0)" class="about_me">关于我们</a>
+          </section>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -14,6 +53,34 @@
 import topHeader from '../../components/topHeader/topHeader'
 export default {
   name: 'loginRegister',
+  data () {
+    return {
+      loginWay: true, // 切换登录方式，true显示当前登录界面
+      computeTime: 0, // 验证码倒计时
+      computedFlag: false, // 计数标志，当计数时切换到不可点击的按钮颜色
+      phone: '' // 手机号
+    }
+  },
+  computed: {
+    rightPhone () {
+      return /^1[345789]\d{9}$/.test(this.phone)
+    }
+  },
+  methods: {
+    getCode () {
+      if (!this.computeTime) {
+        this.computedFlag = true
+        this.computeTime = 30
+        const computedNum = setInterval(() => {
+          this.computeTime -= 1
+          if (this.computeTime === 0) {
+            clearInterval(computedNum)
+            this.computedFlag = false
+          }
+        }, 1000)
+      }
+    }
+  },
   components: {
     topHeader
   }
@@ -30,4 +97,108 @@ export default {
       width 100%
       height 100%
       text-align center
+      display flex
+      justify-content center
+      align-items center
+      flex-direction column
+      .login_title
+        margin-top 0.5rem
+        padding 0.5rem 0
+        font-size 0.7rem
+        font-weight bold
+        color #3a8fe6
+      .login_types
+        font-size 0.25rem
+        .login_msg
+          font-size 0.25rem
+          margin-right 0.3rem
+          padding 0.1rem 0
+        .login_pwd
+          font-size 0.25rem
+          margin-left 0.3rem
+          padding 0.1rem 0
+        .on
+          color #3a8fe6
+          border-bottom 2px solid #3a8fe6
+      .login_content
+        margin-top 0.1rem
+        width 80%
+        margin-top 0.5rem
+        font-size 0.3rem
+        form
+          display none
+        .phone_num
+          width 100%
+          position relative
+          .num_input
+            width 100%
+            height 0.7rem
+            border 1px solid #c0c4cc
+            border-radius 0.1rem
+            box-sizing border-box
+            padding-left 0.2rem
+            font-size 0.3rem
+          .send_verification
+            position absolute
+            border none
+            outline none
+            top 18%
+            right 3%
+            background-color #c0c4cc
+            color #909399
+            padding 0.1rem
+            font-size 0.2rem
+            border-radius 0.1rem
+            &.right_phone
+              background-color #3a8fe6
+              color white
+            &.computed_time
+              background-color #c0c4cc
+              color #909399
+        .verification_num,
+        ,.pwd_num
+          margin-top 0.2rem
+          width 100%
+          position relative
+          .receive_verification
+            width 100%
+            height 0.7rem
+            border 1px solid #c0c4cc
+            border-radius 0.1rem
+            box-sizing border-box
+            padding-left 0.2rem
+            font-size 0.3rem
+          .verification_img
+            position absolute
+            display block
+            top 0
+            right 0
+            width 40%
+          .some_info
+            padding 0.2rem
+            color #909399
+            line-height 0.3rem
+            font-size 0.2rem
+            span
+              color #38ab00
+        .login_submit
+          width 100%
+          .login_btn
+            width 100%
+            border none
+            outline none
+            background-color #3a8fe6
+            padding 0.15rem 0
+            border-radius 0.1rem
+            font-weight bold
+            color white
+            font-size 0.3rem
+          .about_me
+            display block
+            text-decoration none
+            color #909399
+            font-size 0.2rem
+            margin-top 0.3rem
+      .on_form
+        display block !important
 </style>
