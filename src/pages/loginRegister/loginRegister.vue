@@ -11,7 +11,7 @@
         <span class="login_pwd" :class="{on:!loginWay}" @click="loginWay=false">密码登录</span>
       </div>
       <div class="login_content">
-        <form :class="{on_form:loginWay}">
+        <form :class="{on_form:loginWay}" @submit.prevent="login">
           <section class="phone_num">
             <input type="tel" placeholder="手机号" class="num_input" maxlength="11" v-model="phone">
             <button class="send_verification" :disabled="!rightPhone" :class="{right_phone:rightPhone,computed_time:computedFlag}" @click.prevent="getCode">
@@ -19,7 +19,7 @@
             </button>
           </section>
           <section class="verification_num">
-            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="6">
+            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="6" v-model="code">
             <div class="some_info">温馨提示：未注册过帐号的手机号，登录时将自动注册，且代表已同意<span>《用户服务协议》</span></div>
           </section>
           <section class="login_submit">
@@ -27,15 +27,20 @@
             <a href="javascript: void(0)" class="about_me">关于我们</a>
           </section>
         </form>
-        <form :class="{on_form:!loginWay}">
+        <form :class="{on_form:!loginWay}" @submit.prevent="login">
           <section class="phone_num">
-            <input type="tel" placeholder="手机/邮箱/用户名" class="num_input" maxlength="11">
+            <input type="tel" placeholder="手机/邮箱/用户名" class="num_input" maxlength="20" v-model="name">
           </section>
           <section class="pwd_num">
-            <input type="password" placeholder="密码" class="receive_verification">
+            <input type="password" placeholder="密码" class="receive_verification" maxlength="25" v-model="pwd" v-if="showPwd === false">
+            <input type="text" placeholder="密码" class="receive_verification" maxlength="25" v-model="pwd" v-else>
+            <div class="switch_button" @click="ifShowpwd" :class="{on_btn:showPwd,off_btn:!showPwd}">
+              <div class="switch_circle"></div>
+              <span class="switch_text">可见</span>
+            </div>
           </section>
           <section class="verification_num">
-            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="4">
+            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="4" v-model="captcha">
             <img src="./imgs/captcha.svg" class="verification_img">
             <div class="some_info">温馨提示：未注册过帐号的手机号/邮箱/用户名，登录时将自动注册，且代表已同意<span>《用户服务协议》</span></div>
           </section>
@@ -55,10 +60,15 @@ export default {
   name: 'loginRegister',
   data () {
     return {
-      loginWay: true, // 切换登录方式，true显示当前登录界面
+      loginWay: true, // 切换登录方式，true显示短信登录界面
       computeTime: 0, // 验证码倒计时
       computedFlag: false, // 计数标志，当计数时切换到不可点击的按钮颜色
-      phone: '' // 手机号
+      phone: '', // 手机号
+      pwd: '', // 密码
+      showPwd: false, // 是否显示密码
+      code: '', // 短信验证码
+      name: '', // 用户名
+      captcha: '' // 图形验证码
     }
   },
   computed: {
@@ -67,17 +77,38 @@ export default {
     }
   },
   methods: {
+    // 异步获取短信验证码及等待时间
     getCode () {
       if (!this.computeTime) {
         this.computedFlag = true
         this.computeTime = 30
-        const computedNum = setInterval(() => {
+        const computedNum = setInterval(() => { // 设置已发送验证码的等待时间
           this.computeTime -= 1
           if (this.computeTime === 0) {
             clearInterval(computedNum)
             this.computedFlag = false
           }
         }, 1000)
+      }
+    },
+    // 是否显示密码
+    ifShowpwd () {
+      if (this.showPwd) {
+        this.showPwd = false
+      } else {
+        this.showPwd = true
+      }
+    },
+    // 异步登录
+    login () {
+      // 前台表单验证
+      if (this.loginWay) {
+        // 短信登录
+        const {phone, code} = this
+        if (!this.rightPhone) {
+        }
+      } else {
+        const {name, pwd, captcha} = this
       }
     }
   },
@@ -168,6 +199,40 @@ export default {
             box-sizing border-box
             padding-left 0.2rem
             font-size 0.3rem
+          .switch_button
+            font-size 0.24rem
+            border 1px solid #ddd
+            border-radius 0.16rem
+            transition background-color .3s,border-color .3s
+            padding 0 0.04rem
+            padding-right 0.2rem
+            width 0.6rem
+            height 0.32rem
+            line-height 0.32rem
+            color #fff
+            position absolute
+            top 50%
+            right 0.2rem
+            transform translateY(-50%)
+            &.off_btn
+              background #ffffff
+            &.on_btn
+              background #02a774
+              .switch_text
+                color #ddd
+              .switch_circle
+                transform translateX(0.62rem)
+            >.switch_circle
+              position absolute
+              top -0.02rem
+              left -0.02rem
+              width 0.32rem
+              height 0.32rem
+              border 1px solid #ddd
+              border-radius 50%
+              background #fff
+              box-shadow 0 0.04rem 0.08rem 0 rgba(0,0,0,.1)
+              transition transform .3s
           .verification_img
             position absolute
             display block
