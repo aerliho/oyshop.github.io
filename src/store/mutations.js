@@ -5,7 +5,8 @@ import {
   RECEIVE_CITYPOSITION,
   RECEIVE_CITYDETAILEDINFO,
   RECEIVE_FOODTYPES,
-  RECEIVE_SHOPLIST
+  RECEIVE_SHOPLIST,
+  RECEIVE_CAPTCHAS
 } from './mutation-types'
 
 export default {
@@ -22,5 +23,8 @@ export default {
   },
   [RECEIVE_SHOPLIST] (state, {shopList}) {
     state.shopList = shopList
+  },
+  [RECEIVE_CAPTCHAS] (state, {captchas}) {
+    state.captchas = captchas
   }
 }

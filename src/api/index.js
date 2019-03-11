@@ -12,3 +12,12 @@ export const reqCityDetailedInfo = (geohash) => ajax(`${BASE_URL}/v2/pois/${geoh
 export const reqFoodTypes = () => ajax(BASE_URL + '/v2/index_entry')
 // 获取商铺列表
 export const reqShopList = (latitude, longitude) => ajax(BASE_URL + '/shopping/restaurants', {latitude, longitude})
+// 获取登录的验证码图片
+export const reqCaptchas = () => ajax(BASE_URL + '/v1/captchas', {}, 'post')
+// 用户密码登录
+// eslint-disable-next-line
+export const reqPwdLogin = ({username, password, captcha_code}) => ajax(BASE_URL + '/v2/login', {username, password, captcha_code}, 'post')
+// 获取用户信息
+export const reqUserInfo = () => ajax(BASE_URL + '/v1/user')
+// 退出登录
+export const reqLoginOut = () => ajax(BASE_URL + '/v2/signout')

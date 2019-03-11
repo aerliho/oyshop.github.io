@@ -29,19 +29,19 @@
         </form>
         <form :class="{on_form:!loginWay}" @submit.prevent="login">
           <section class="phone_num">
-            <input type="tel" placeholder="手机/邮箱/用户名" class="num_input" maxlength="20" v-model="name">
+            <input type="tel" placeholder="手机/邮箱/用户名" class="num_input" maxlength="20" v-model="username">
           </section>
           <section class="pwd_num">
-            <input type="password" placeholder="密码" class="receive_verification" maxlength="25" v-model="pwd" v-if="showPwd === false">
-            <input type="text" placeholder="密码" class="receive_verification" maxlength="25" v-model="pwd" v-else>
+            <input type="password" placeholder="密码" class="receive_verification" maxlength="25" v-model="password" v-if="showPwd === false">
+            <input type="text" placeholder="密码" class="receive_verification" maxlength="25" v-model="password" v-else>
             <div class="switch_button" @click="ifShowpwd" :class="{on_btn:showPwd,off_btn:!showPwd}">
               <div class="switch_circle"></div>
               <span class="switch_text">可见</span>
             </div>
           </section>
           <section class="verification_num">
-            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="4" v-model="captcha">
-            <img src="./imgs/captcha.svg" class="verification_img">
+            <input type="tel" placeholder="验证码" class="receive_verification" maxlength="4" v-model="captcha_code">
+            <img :src="captchas.code" class="verification_img" @click="getCaptchas">
             <div class="some_info">温馨提示：未注册过帐号的手机号/邮箱/用户名，登录时将自动注册，且代表已同意<span>《用户服务协议》</span></div>
           </section>
           <section class="login_submit">
@@ -56,27 +56,38 @@
 
 <script>
 import topHeader from '../../components/topHeader/topHeader'
+import { MessageBox } from 'mint-ui'
+import { mapActions, mapState } from 'vuex'
+import {reqPwdLogin} from '../../api'
+
 export default {
   name: 'loginRegister',
   data () {
     return {
-      loginWay: true, // 切换登录方式，true显示短信登录界面
+      loginWay: false, // 切换登录方式，true显示短信登录界面
       computeTime: 0, // 验证码倒计时
       computedFlag: false, // 计数标志，当计数时切换到不可点击的按钮颜色
       phone: '', // 手机号
-      pwd: '', // 密码
+      password: '', // 密码
       showPwd: false, // 是否显示密码
       code: '', // 短信验证码
-      name: '', // 用户名
-      captcha: '' // 图形验证码
+      username: '', // 用户名
+      // eslint-disable-next-line
+      captcha_code: '' // 图形验证码
     }
   },
   computed: {
     rightPhone () {
       return /^1[345789]\d{9}$/.test(this.phone)
-    }
+    },
+    ...mapState(['captchas'])
+  },
+  mounted () {
+    this.getCaptchas()
   },
   methods: {
+    // 异步请求图片验证码
+    ...mapActions(['getCaptchas']),
     // 异步获取短信验证码及等待时间
     getCode () {
       if (!this.computeTime) {
@@ -100,20 +111,49 @@ export default {
       }
     },
     // 异步登录
-    login () {
+    async login () {
       // 前台表单验证
       if (this.loginWay) {
         // 短信登录
-        const {phone, code} = this
-        if (!this.rightPhone) {
+        const {rightPhone, code} = this
+        if (!rightPhone) {
+          MessageBox('提示', '手机号输入不正确')
+        } else if (!/^\d{6}$/.test(code)) {
+          MessageBox('提示', '验证码输入不正确')
         }
       } else {
-        const {name, pwd, captcha} = this
+        // eslint-disable-next-line
+        const {username, password, captcha_code} = this
+        if (!username) {
+          MessageBox('提示', '帐号输入不正确')
+        } else if (!password) {
+          MessageBox('提示', '密码输入不正确')
+          // eslint-disable-next-line
+        } else if (!captcha_code) {
+          MessageBox('提示', '验证码输入不正确')
+        }
+        const result = await reqPwdLogin({username, password, captcha_code})
+        if (result.status === 0) {
+          MessageBox('提示', result.message).then(action => {
+            this.getCaptchas()
+          })
+        } else {
+          MessageBox('欢迎', '登陆成功')
+          console.log(result)
+        }
       }
     }
   },
   components: {
-    topHeader
+    topHeader,
+    MessageBox
+  },
+  watch: {
+    loginWay (value) {
+      if (this.loginWay === true) {
+        MessageBox('提示', '暂未开通手机验证码登录！')
+      }
+    }
   }
 }
 </script>
@@ -237,8 +277,8 @@ export default {
             position absolute
             display block
             top 0
-            right 0
-            width 40%
+            right 0.1rem
+            width 36%
           .some_info
             padding 0.2rem
             color #909399

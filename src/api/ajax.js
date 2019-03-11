@@ -21,7 +21,7 @@ export default function ajax (url, data = {}, type = 'get') {
       promise = axios.get(url)
     } else {
       // 发送post请求
-      promise = axios.post(url.data)
+      promise = axios.post(url, data)
     }
     promise.then(response => {
       resolve(response.data)

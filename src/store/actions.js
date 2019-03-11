@@ -6,14 +6,16 @@ import {
   RECEIVE_CITYPOSITION,
   RECEIVE_CITYDETAILEDINFO,
   RECEIVE_FOODTYPES,
-  RECEIVE_SHOPLIST
+  RECEIVE_SHOPLIST,
+  RECEIVE_CAPTCHAS
 } from './mutation-types'
 
 import {
   reqCityPosition,
   reqCityDetailedInfo,
   reqFoodTypes,
-  reqShopList
+  reqShopList,
+  reqCaptchas
 } from '../api'
 
 export default {
@@ -37,5 +39,10 @@ export default {
   async getShopList ({commit, state}) {
     const shopList = await reqShopList(state.latitude, state.longitude)
     commit(RECEIVE_SHOPLIST, {shopList})
+  },
+  // 异步获取验证码
+  async getCaptchas ({commit}) {
+    const captchas = await reqCaptchas()
+    commit(RECEIVE_CAPTCHAS, {captchas})
   }
 }
