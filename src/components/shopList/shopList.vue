@@ -6,7 +6,7 @@
     </div>
     <div class="shop_container">
       <ul class="shop_list" v-if="shopList.length">
-        <li class="shop_li border-1px" v-for="(shop, index) in shopList" :key="index">
+        <li class="shop_li border-1px" v-for="(shop, index) in shopList" :key="index" @click="$router.push('/shop')">
           <a>
             <div class="shop_left">
               <img class="shop_img" :src="'//elm.cangdu.org/img/' + shop.image_path">

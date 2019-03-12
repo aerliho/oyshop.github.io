@@ -138,8 +138,10 @@ export default {
             this.getCaptchas()
           })
         } else {
-          MessageBox('欢迎', '登陆成功')
-          console.log(result)
+          this.$store.dispatch('getUserInfo', result)
+          MessageBox('欢迎', '登陆成功').then(action => {
+            this.$router.replace('/personal')
+          })
         }
       }
     }

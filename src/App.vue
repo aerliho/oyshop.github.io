@@ -15,14 +15,13 @@ export default {
   },
   mounted () {
     this.getCityPosition()
+    this.getUserInfoAuto()
   },
   computed: {
     ...mapState(['cityPosition'])
   },
   methods: {
-    ...mapActions(['getCityPosition']),
-    ...mapActions(['getCityDetailedInfo']),
-    ...mapActions(['getShopList'])
+    ...mapActions(['getCityPosition', 'getCityDetailedInfo', 'getShopList', 'getUserInfoAuto'])
   },
   watch: {
     cityPosition (value) {

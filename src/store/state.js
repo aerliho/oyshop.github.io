@@ -8,5 +8,9 @@ export default {
   cityDetailedInfo: {}, // 城市的具体信息
   foodTypes: [], // 食品分类数组
   shopList: [], // 商品列表数组
-  captchas: {} // 图片验证码对象
+  captchas: {}, // 图片验证码对象
+  userInfo: {}, // 用户信息
+  goods: [], // 商品列表
+  ratings: [], // 商家评价列表
+  info: {} // 商家信息
 }

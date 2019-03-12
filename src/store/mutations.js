@@ -6,7 +6,12 @@ import {
   RECEIVE_CITYDETAILEDINFO,
   RECEIVE_FOODTYPES,
   RECEIVE_SHOPLIST,
-  RECEIVE_CAPTCHAS
+  RECEIVE_CAPTCHAS,
+  RECEIVE_USERINFO,
+  RESET_USERINFO,
+  RECEIVE_INFO,
+  RECEIVE_RATINGS,
+  RECEIVE_GOODS
 } from './mutation-types'
 
 export default {
@@ -26,5 +31,20 @@ export default {
   },
   [RECEIVE_CAPTCHAS] (state, {captchas}) {
     state.captchas = captchas
+  },
+  [RECEIVE_USERINFO] (state, {userInfo}) {
+    state.userInfo = userInfo
+  },
+  [RESET_USERINFO] (state) {
+    state.userInfo = {}
+  },
+  [RECEIVE_INFO] (state, {info}) {
+    state.info = info
+  },
+  [RECEIVE_RATINGS] (state, {ratings}) {
+    state.ratings = ratings
+  },
+  [RECEIVE_GOODS] (state, {goods}) {
+    state.goods = goods
   }
 }

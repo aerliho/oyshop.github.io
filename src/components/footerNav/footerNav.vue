@@ -1,5 +1,5 @@
 <template>
-  <div class="footer" v-show="this.$route.path != '/loginRegister'">
+  <div class="footer" v-show="this.$route.path === '/home'||this.$route.path === '/search'||this.$route.path === '/order'||this.$route.path === '/personal'">
     <ul class="myfooternav">
       <li class="footnav" :class="{onfootnav: '/home' === $route.path}" @click="goTo('/home')"><i class="iconfont iconhome-full footicon"></i><span>外卖</span></li>
       <li class="footnav" :class="{onfootnav: '/search' === $route.path}" @click="goTo('/search')"><i class="iconfont iconsousuo footicon"></i><span>搜索</span></li>

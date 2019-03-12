@@ -1,9 +1,10 @@
 <template>
   <div class="personal">
     <topHeader title="个人中心"></topHeader>
-    <router-link class="personInfo" to="/loginRegister">
+    <router-link class="personInfo" :to="userInfo.id? '/userInfo':'/loginRegister'">
       <img src="./imgs/personalimg.jpg">
-      <span class="login_text">登录/注册<span class="notbind"><i class="iconfont iconshouji" style="font-size: 0.2rem"></i>暂未绑定手机</span></span>
+      <span class="login_text">{{ userInfo.id? userInfo.username:'登录/注册' }}</span>
+      <span class="notbind"><i class="iconfont iconshouji" style="font-size: 0.2rem"></i>暂未绑定手机</span>
       <i class="iconfont iconjiantou-you personal_you"></i>
     </router-link>
     <div class="personalContent">
@@ -19,11 +20,16 @@
     <div class="someServe">
       <p><i class="iconfont iconfuwu othericon" style="color: #ff2e2e"></i>服务中心</p>
     </div>
+    <div class="loginOut" v-if="userInfo.id">
+      <mt-button type="danger" style="width: 100%;display: inherit;" @click="loginOut">退出登录</mt-button>
+    </div>
   </div>
 </template>
 
 <script>
+import { MessageBox, Toast } from 'mint-ui'
 import topHeader from '../../components/topHeader/topHeader'
+import {mapState} from 'vuex'
 export default {
   name: 'personal',
   components: {
@@ -32,7 +38,20 @@ export default {
   methods: {
     goTo (path) {
       this.$router.replace(path)
+    },
+    loginOut () {
+      MessageBox.confirm('确定退出登录吗？', '提示').then(action => {
+        this.$store.dispatch('loginOut')
+        Toast({
+          message: '退出成功',
+          iconClass: 'iconfont iconqueding',
+          duration: 1000
+        })
+      })
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   }
 }
 </script>
@@ -50,6 +69,7 @@ export default {
       display block
       margin-top 0.1rem
       padding 0.2rem 0
+      position relative
       img
         position relative
         left 0.7rem
@@ -59,19 +79,24 @@ export default {
         border-radius 50%
       .login_text
         position relative
+        display inline-block
+        width 60%
         left 0.7rem
         top -0.55rem
         font-weight bold
         font-size 0.3rem
-        .notbind
-          position relative
-          left -1.4rem
-          top 0.5rem
-          font-size 0.2rem
+        text-overflow ellipsis
+        overflow hidden
+        white-space: nowrap
+      .notbind
+        position absolute
+        top 0.9rem
+        left 1.9rem
+        font-size 0.2rem
       .personal_you
         font-size 0.5rem
         position relative
-        left 1.5rem
+        right -0.5rem
         top -0.18rem
     .personalContent
       display flex
@@ -112,4 +137,6 @@ export default {
         .othericon
           font-size: 0.4rem
           margin-right:0.2rem
+    .loginOut
+      margin-top 0.1rem
 </style>

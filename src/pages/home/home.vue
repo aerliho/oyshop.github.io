@@ -5,7 +5,8 @@
         <i class="iconfont iconsousuo"></i>
       </span>
       <span class="header_login" slot="right">
-        <router-link to="/loginRegister">登录/注册</router-link>
+        <router-link to="/personal" v-if="userInfo.id"><i class="iconfont icongeren2" style="color: #3a8fe6; font-size:0.4rem"></i></router-link>
+        <router-link to="/loginRegister" v-else>登录/注册</router-link>
       </span>
     </topHeader>
     <div class="homeContent">
@@ -28,7 +29,7 @@ export default {
     foodTypes
   },
   computed: {
-    ...mapState(['cityDetailedInfo'])
+    ...mapState(['cityDetailedInfo', 'userInfo'])
   },
   methods: {
     goTo (path) {
@@ -57,6 +58,8 @@ export default {
       margin 0
       padding 0
       font-size 0.3rem
+      display block
+      width 25%
       a
         text-decoration none
         font-size 0.24rem

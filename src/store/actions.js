@@ -7,7 +7,12 @@ import {
   RECEIVE_CITYDETAILEDINFO,
   RECEIVE_FOODTYPES,
   RECEIVE_SHOPLIST,
-  RECEIVE_CAPTCHAS
+  RECEIVE_CAPTCHAS,
+  RECEIVE_USERINFO,
+  RESET_USERINFO,
+  RECEIVE_GOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO
 } from './mutation-types'
 
 import {
@@ -15,7 +20,12 @@ import {
   reqCityDetailedInfo,
   reqFoodTypes,
   reqShopList,
-  reqCaptchas
+  reqCaptchas,
+  reqUserInfoAuto,
+  reqLoginOut,
+  reqShopRatings,
+  reqShopGoods,
+  reqShopInfo
 } from '../api'
 
 export default {
@@ -44,5 +54,47 @@ export default {
   async getCaptchas ({commit}) {
     const captchas = await reqCaptchas()
     commit(RECEIVE_CAPTCHAS, {captchas})
+  },
+  // 同步获取用户信息
+  getUserInfo ({commit}, userInfo) {
+    commit(RECEIVE_USERINFO, {userInfo})
+  },
+  async getUserInfoAuto ({commit}) {
+    const userInfo = await reqUserInfoAuto()
+    commit(RECEIVE_USERINFO, {userInfo})
+  },
+  async loginOut ({commit}) {
+    const outResult = await reqLoginOut()
+    if (outResult.status === 1) {
+      commit(RESET_USERINFO)
+    }
+  },
+  // 异步获取商家信息
+  async getShopInfo ({commit}) {
+    const result = await reqShopInfo()
+    if (result.code === 0) {
+      const info = result.data
+      commit(RECEIVE_INFO, {info})
+    }
+  },
+  // 异步获取商家评价列表
+  async getShopRatings ({commit}, callback) {
+    const result = await reqShopRatings()
+    if (result.code === 0) {
+      const ratings = result.data
+      commit(RECEIVE_RATINGS, {ratings})
+      // 数据更新了, 通知一下组件
+      callback && callback()
+    }
+  },
+  // 异步获取商家商品列表
+  async getShopGoods ({commit}, callback) {
+    const result = await reqShopGoods()
+    if (result.code === 0) {
+      const goods = result.data
+      commit(RECEIVE_GOODS, {goods})
+      // 数据更新了, 通知一下组件
+      callback && callback()
+    }
   }
 }

@@ -18,6 +18,12 @@ export const reqCaptchas = () => ajax(BASE_URL + '/v1/captchas', {}, 'post')
 // eslint-disable-next-line
 export const reqPwdLogin = ({username, password, captcha_code}) => ajax(BASE_URL + '/v2/login', {username, password, captcha_code}, 'post')
 // 获取用户信息
-export const reqUserInfo = () => ajax(BASE_URL + '/v1/user')
+export const reqUserInfoAuto = () => ajax(BASE_URL + '/v1/user')
 // 退出登录
 export const reqLoginOut = () => ajax(BASE_URL + '/v2/signout')
+// 获取商家信息
+export const reqShopInfo = () => ajax('/info')
+// 获取商家评价数组
+export const reqShopRatings = () => ajax('/ratings')
+// 获取商家商品数组
+export const reqShopGoods = () => ajax('/goods')
