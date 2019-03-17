@@ -145,7 +145,7 @@ export default {
     .shop-nav
       background-size cover
       background-repeat no-repeat
-      height 0.8rem
+      height 0.7rem
       padding 0.1rem 0.2rem
       position relative
       &::before
@@ -176,11 +176,11 @@ export default {
         position: absolute;
         top: 0;
         left: 50%;
-        width: 1.32rem
-        height: 1.32rem
+        width: 1.2rem
+        height: 1.2rem
         border-radius: 2px
         margin-left -0.66rem
-        margin-top -0.8rem
+        margin-top -0.65rem
       .header-content
         flex 1
         width 72%

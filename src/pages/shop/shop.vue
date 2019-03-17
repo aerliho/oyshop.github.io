@@ -20,6 +20,10 @@
 import shopHeader from '../../components/shopHeader/shopHeader'
 export default {
   name: 'shop',
+  data () {
+    return {
+    }
+  },
   components: {
     shopHeader
   },
@@ -32,8 +36,8 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
   .tab
-    height 0.8rem
-    line-height 0.8rem
+    height 0.7rem
+    line-height 0.7rem
     background #fff
     font-size 0.3rem
     bottom-border-1px(rgba(7, 17, 27, 0.1))
@@ -48,7 +52,7 @@ export default {
         position relative
         text-decoration none
         &.router-link-active
-          color #02a774
+          color #3a8fe6
           &::after
             content ''
             position absolute
@@ -57,5 +61,5 @@ export default {
             width 0.7rem
             height 0.04rem
             transform translateX(-50%)
-            background #02a774
+            background #3a8fe6
 </style>
