@@ -17,9 +17,10 @@
           <li class="food-list-hook"  v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{ good.name }}</h1>
             <ul>
-              <li class="food-item" v-for="(food, index) in good.foods" :key="index">
+              <li class="food-item" v-for="(food, index) in good.foods"
+               :key="index" @click="showFood(food)">
                 <div class="icon">
-                  <img width="57" height="57" :src="food.icon">
+                  <img :src="food.icon">
                 </div>
                 <div class="content">
                   <h2 class="name">{{ food.name }}</h2>
@@ -33,7 +34,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{ food.oldPrice }}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <CartControl/>
+                    <CartControl :food="food" />
                   </div>
                 </div>
               </li>
@@ -43,6 +44,7 @@
       </div>
       <ShopCart />
     </div>
+    <food :food="food" ref="food"></food>
   </div>
 </template>
 
@@ -51,12 +53,14 @@ import CartControl from '../../../components/CartControl/CartControl'
 import ShopCart from '../../../components/ShopCart/ShopCart'
 import {mapState} from 'vuex'
 import BScroll from 'better-scroll'
+import food from '../../../components/food/food'
 export default {
   data () {
     return {
       scrollY: 0,
       tops: [],
-      screenHeight: ''
+      screenHeight: window.screen.height,
+      food: {} // 需要显示的food
     }
   },
   computed: {
@@ -77,9 +81,15 @@ export default {
     }
   },
   mounted () {
-    this.screenHeight = (window.screen.height / 50 - 3.6) + 'rem'
+    if (this.screenHeight > 800 && this.screenHeight <= 1000) {
+      this.screenHeight = (window.screen.height / 85) + 'rem'
+    } else if (this.screenHeight > 1000) {
+      this.screenHeight = (window.screen.height / 230) + 'rem'
+    } else {
+      this.screenHeight = (window.screen.height / 80) + 'rem'
+    }
     window.onresize = () => {
-      this.screenHeight = (window.screen.height / 50 - 3.6) + 'rem'
+      this.screenHeight = (window.screen.height / 80) + 'rem'
     }
     this.$store.dispatch('getShopGoods', () => {
       this.$nextTick(() => {
@@ -125,11 +135,17 @@ export default {
       // 立即让点击的分类为当前分类
       this.scrollY = scrolly
       this.foodsScroll.scrollTo(0, -scrolly, 300)
+    },
+    showFood (food) {
+      this.food = food
+      // 显示food组件（在父组件中调用子组件对象方法）
+      this.$refs.food.toggleShow()
     }
   },
   components: {
     CartControl,
-    ShopCart
+    ShopCart,
+    food
   }
 }
 </script>
@@ -144,6 +160,7 @@ export default {
       width 100%
       overflow hidden
       font-size 0.4rem
+      margin-bottom 0.96rem
       .menu-wrapper
         width 1.6rem
         background-color #ececec
@@ -180,6 +197,9 @@ export default {
           .icon
             flex: 0 0 1rem
             margin-right: 0.2rem
+            img
+              width 1.14rem
+              height 1.14rem
           .content
             flex: 1
             .name

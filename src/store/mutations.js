@@ -11,8 +11,12 @@ import {
   RESET_USERINFO,
   RECEIVE_INFO,
   RECEIVE_RATINGS,
-  RECEIVE_GOODS
+  RECEIVE_GOODS,
+  INCREASE_COUNT,
+  DECREASE_COUNT,
+  CLEAR_CART
 } from './mutation-types'
+import Vue from 'vue'
 
 export default {
   [RECEIVE_CITYPOSITION] (state, {cityPosition}) {
@@ -46,5 +50,31 @@ export default {
   },
   [RECEIVE_GOODS] (state, {goods}) {
     state.goods = goods
+  },
+  [INCREASE_COUNT] (state, {food}) {
+    if (!food.count) {
+      Vue.set(food, 'count', 1)
+      state.cartFoods.push(food)
+    } else {
+      food.count++
+    }
+  },
+  [DECREASE_COUNT] (state, {food}) {
+    if (food.count) { // 只有有值才去减
+      food.count--
+      if (food.count === 0) {
+        // 将food从cartFoods中移除
+        state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+      }
+    }
+  },
+  [CLEAR_CART] (state) {
+    // 清除food中的count
+    state.cartFoods.forEach(food => {
+      food.count = 0
+      return food.count
+    })
+    // 移除购物车中所有购物项
+    state.cartFoods = []
   }
 }

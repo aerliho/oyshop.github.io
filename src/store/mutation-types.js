@@ -12,3 +12,7 @@ export const RESET_USERINFO = 'reset_userInfo'
 export const RECEIVE_GOODS = 'receive_goods' // 接收商品数组
 export const RECEIVE_RATINGS = 'receive_ratings' // 接收商家评价数组
 export const RECEIVE_INFO = 'receive_info' // 接收商家信息
+
+export const INCREASE_COUNT = 'increase_count' // 增加点餐食物个数
+export const DECREASE_COUNT = 'decrease_count' // 减少点餐食物个数
+export const CLEAR_CART = 'clear_cart' // 清空购物车

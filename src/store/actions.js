@@ -12,7 +12,10 @@ import {
   RESET_USERINFO,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO
+  RECEIVE_INFO,
+  DECREASE_COUNT,
+  INCREASE_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 
 import {
@@ -96,5 +99,17 @@ export default {
       // 数据更新了, 通知一下组件
       callback && callback()
     }
+  },
+  // 同步更新food里的商品个数
+  changeCount ({commit}, {isAdd, food}) {
+    if (isAdd) {
+      commit(INCREASE_COUNT, {food})
+    } else {
+      commit(DECREASE_COUNT, {food})
+    }
+  },
+  // 同步清空购物车
+  clearCart ({commit}) {
+    commit(CLEAR_CART)
   }
 }
