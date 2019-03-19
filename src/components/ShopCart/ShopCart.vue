@@ -149,7 +149,7 @@ export default {
             text-align center
             background #2b343c
             &.highlight
-              background $green
+              background $blue
             .icongouwuche
               line-height 0.88rem
               font-size 0.48rem

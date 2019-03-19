@@ -255,7 +255,7 @@ export default {
     .shop-header-discounts
       display flex
       background #fff
-      border-radius 1px
+      border-radius 0.02rem
       border 1px solid #eee
       padding 0.1rem 0.14rem
       font-size 0.22rem
@@ -269,7 +269,7 @@ export default {
           display flex
           align-items center
           .content-tag
-            border-radius 1px
+            border-radius 0.02rem
             width 0.5rem
             height 0.26rem
             margin-right 0.1rem
@@ -284,7 +284,7 @@ export default {
               top 0
               right -100%
               bottom -100%
-              font-size 18px
+              font-size 0.36rem
               font-weight 600
               transform scale(.5)
               transform-origin 0 0
@@ -292,7 +292,7 @@ export default {
               align-items center
               justify-content center
       .discounts-right
-        width 50px
+        width 1rem
         flex-shrink 0
         position relative
         padding-right 0.2rem
