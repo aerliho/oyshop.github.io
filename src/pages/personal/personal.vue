@@ -47,7 +47,7 @@ export default {
           iconClass: 'iconfont iconqueding',
           duration: 1000
         })
-      })
+      }, () => {})
     }
   },
   computed: {
